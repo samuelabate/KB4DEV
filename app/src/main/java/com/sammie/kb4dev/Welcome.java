@@ -12,7 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 public class Welcome extends ListActivity {
-    String classes[]= {"MainActivity", "SignIn" };
+    String classes[]= {"SignUp", "SignIn" };
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

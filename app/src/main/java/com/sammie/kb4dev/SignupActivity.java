@@ -29,7 +29,6 @@ public class SignupActivity extends AsyncTask<String, Void, String> {
         String passWord = arg0[2];
         String phoneNumber = arg0[3];
         String emailAddress = arg0[4];
-
         String link;
         String data;
         BufferedReader bufferedReader;
@@ -43,7 +42,7 @@ public class SignupActivity extends AsyncTask<String, Void, String> {
             data += "&phonenumber=" + URLEncoder.encode(phoneNumber, "UTF-8");
             data += "&emailaddress=" + URLEncoder.encode(emailAddress, "UTF-8");
 
-            link = "http://192.168.0.188/kb4dev/signup.php" + data;
+            link = "http://192.168.0.190/kb4dev/signup.php" + data;
             URL url = new URL(link);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
@@ -63,16 +62,16 @@ public class SignupActivity extends AsyncTask<String, Void, String> {
         String jsonStr = result;
         if (jsonStr != null) {
             try {
-
                 Log.d("Hi Sammie!!!", "I'm inside onPostExecute's try...");
                 JSONObject jsonObj = new JSONObject(jsonStr);
                 Log.d("Hi Sammie!!!", "After creating a json object giving a string parameter...");
                 String query_result = jsonObj.getString("query_result");
                 Log.d("Hi Sammie!!!", "After getting string from json...");
+                SignUp.progress.dismiss();
                 if (query_result.equals("SUCCESS")) {
-                    Toast.makeText(context, "Data inserted successfully. Signup successfull.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Signup Successfull!", Toast.LENGTH_SHORT).show();
                 } else if (query_result.equals("FAILURE")) {
-                    Toast.makeText(context, "Data could not be inserted. Signup failed.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "Signup failed!", Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(context, query_result, Toast.LENGTH_SHORT).show();
                 }
