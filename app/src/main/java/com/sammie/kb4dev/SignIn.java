@@ -27,8 +27,10 @@ public class SignIn extends AppCompatActivity{
     {
         username = uName.getText().toString();
         password = pass.getText().toString();
-        if (!username.equals(null) && !password.equals(null))
+        if (!username.equals(null) && !password.equals(null)) {
+            Toast.makeText(getApplicationContext(), "Signning in...", Toast.LENGTH_SHORT).show();
             new signInAsync(this).execute(username, password);
+        }
         else
             Toast.makeText(this, "One or more fields are left empty!", Toast.LENGTH_SHORT).show();
     }

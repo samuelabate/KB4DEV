@@ -1,7 +1,13 @@
 package com.sammie.kb4dev;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -34,7 +40,7 @@ public class signInAsync extends AsyncTask<String, Void, String> {
         try {
             data = "?username=" + URLEncoder.encode(username, "UTF-8");
             data += "&password=" + URLEncoder.encode(pass, "UTF-8");
-            link = "http://192.168.0.188/kb4dev/signin.php" + data;
+            link = "http://192.168.0.121/kb4dev/signin.php" + data;
             URL url = new URL(link);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
@@ -55,7 +61,18 @@ public class signInAsync extends AsyncTask<String, Void, String> {
                 jsonObject = new JSONObject(s);
                 String query_result = jsonObject.getString("query_result");
                 if (query_result.equals("SUCCESS")) {
-                    SignIn.info.setText("Hi " + jsonObject.getString("full_name") +"! You're now a'uthenticated!");
+                    SignIn.info.setText("Hi " + jsonObject.getString("full_name") +"! You're now authenticated!");
+
+                    NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
+                            .setSmallIcon(R.drawable.k).setContentTitle("kb4dev").setContentText("You're signed in to kb4dev.");
+                    NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                    Intent intent = new Intent(context, Welcome.class);
+                    TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(context);
+                    taskStackBuilder.addParentStack(MainActivity.class);
+                    taskStackBuilder.addNextIntent(intent);
+                    PendingIntent pendingIntent = taskStackBuilder.getPendingIntent( 0, PendingIntent.FLAG_UPDATE_CURRENT);
+                    mBuilder.setContentIntent(pendingIntent);
+                    nm.notify(0, mBuilder.build());
                 } else {
                     SignIn.info.setText(jsonObject.getString("query_result"));
                 }
